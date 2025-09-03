@@ -7,7 +7,7 @@ classDiagram
     %% ENTIDADES PRINCIPAIS
     class Usuario {
         <<UUID>> id
-        +String primeiroNome
+        +String nome
         +String sobrenome
         +String cpf
         +String email
