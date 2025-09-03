@@ -6,26 +6,29 @@
 classDiagram
     %% ENTIDADES PRINCIPAIS
     class Usuario {
-        +Long id
-        +String nome
+        <<UUID>> id
+        +String primeiroNome
+        +String sobrenome
+        +String cpf
         +String email
+        +String telefone
         +String senha
-        +Papel papel
-        +Equipe equipe
     }
 
     class Equipe {
-        +Long id
+        <<UUID>> id
         +String nome
         +List<Usuario> membros
         +List<Tarefa> tarefas
     }
 
     class Tarefa {
-        +Long id
+        <<UUID>> id
         +String titulo
         +String descricao
+        +LocalDateTime dataCriacao
         +LocalDate prazo
+        +LocalDateTime dataTermino
         +Prioridade prioridade
         +StatusTarefa status
         +Usuario responsavel
@@ -34,34 +37,21 @@ classDiagram
     }
 
     class Comentario {
-        +Long id
+        <<UUID>> id
         +String conteudo
         +LocalDateTime criadoEm
         +Usuario autor
     }
 
-    class RegistroAtividade {
-        +Long id
-        +String acao
-        +LocalDateTime dataHora
+    class RecuperacaoSenha {
+        <<UUID>> id
+        +String token
+        +LocalDateTime criadoEm
+        +LocalDateTime expiraEm
         +Usuario usuario
-        +Tarefa tarefa
-    }
-
-    class Relatorio {
-        +Long id
-        +TipoRelatorio tipo
-        +LocalDate geradoEm
-        +Usuario geradoPor
     }
 
     %% ENUMS
-    class Papel {
-        <<enum>>
-        ADMINISTRADOR
-        MEMBRO
-    }
-
     class Prioridade {
         <<enum>>
         BAIXA
@@ -76,18 +66,11 @@ classDiagram
         CONCLUIDA
     }
 
-    class TipoRelatorio {
-        <<enum>>
-        PDF
-        EXCEL
-    }
-
     %% RELACIONAMENTOS
     Equipe "1" --> "0..*" Usuario : possui
     Equipe "1" --> "0..*" Tarefa : gerencia
     Usuario "1" --> "0..*" Tarefa : responsavelPor
     Usuario "1" --> "0..*" Comentario : escreve
-    Usuario "1" --> "0..*" RegistroAtividade : executa
     Tarefa "1" --> "0..*" Comentario : contem
-    Tarefa "1" --> "0..*" RegistroAtividade : registrado
-    Relatorio "1" --> "1" Usuario : geradoPor
+    Usuario "1" --> "0..*" RecuperacaoSenha : possui
+
