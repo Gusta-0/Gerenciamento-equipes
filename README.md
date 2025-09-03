@@ -39,15 +39,16 @@ classDiagram
     class Comentario {
         <<UUID>> id
         +String conteudo
-        +LocalDateTime criadoEm
+        +LocalDateTime dataCriacao
         +Usuario autor
+        +Tarefa tarefa
     }
 
     class RecuperacaoSenha {
         <<UUID>> id
         +String token
-        +LocalDateTime criadoEm
-        +LocalDateTime expiraEm
+        +LocalDateTime dataCriacao
+        +LocalDateTime dataExpiracao
         +Usuario usuario
     }
 
