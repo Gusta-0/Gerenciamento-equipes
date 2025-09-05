@@ -4,90 +4,75 @@
 
 ```mermaid
 classDiagram
-    %% ENTIDADES PRINCIPAIS
+
     class Usuario {
-        +Long id
+        +UUID id
         +String nome
+        +String sobrenome
+        +String cpf
         +String email
+        +String telefone
         +String senha
-        +Papel papel
-        +Equipe equipe
+    }
+
+    class Administrador {
+        // tipo de Usuario com menos atributos
+    }
+
+    class Role {
+        +UUID id
+        +String nome
     }
 
     class Equipe {
-        +Long id
+        +UUID id
         +String nome
-        +List<Usuario> membros
-        +List<Tarefa> tarefas
+        +List~Usuario~ membros
+        +List~Tarefa~ tarefas
     }
 
     class Tarefa {
-        +Long id
+        +UUID id
         +String titulo
-        +String descricao
-        +LocalDate prazo
+        +String comentario
+        +LocalDateTime dataCriacao
+        +LocalDateTime prazo
+        +LocalDateTime dataTermino
         +Prioridade prioridade
         +StatusTarefa status
-        +Usuario responsavel
-        +Equipe equipe
-        +List<Comentario> comentarios
     }
 
-    class Comentario {
-        +Long id
-        +String conteudo
-        +LocalDateTime criadoEm
-        +Usuario autor
-    }
-
-    class RegistroAtividade {
-        +Long id
-        +String acao
-        +LocalDateTime dataHora
-        +Usuario usuario
-        +Tarefa tarefa
-    }
-
-    class Relatorio {
-        +Long id
-        +TipoRelatorio tipo
-        +LocalDate geradoEm
-        +Usuario geradoPor
-    }
-
-    %% ENUMS
-    class Papel {
-        <<enum>>
-        ADMINISTRADOR
-        MEMBRO
+    class RecuperacaoSenha {
+        +UUID id
+        +String token
+        +LocalDateTime dataCriacao
+        +LocalDateTime dataExpiracao
     }
 
     class Prioridade {
-        <<enum>>
+        <<enumeration>>
         BAIXA
         MEDIA
         ALTA
     }
 
     class StatusTarefa {
-        <<enum>>
+        <<enumeration>>
         A_FAZER
         EM_ANDAMENTO
         CONCLUIDA
     }
 
-    class TipoRelatorio {
-        <<enum>>
-        PDF
-        EXCEL
-    }
+    %% Herança
+    Administrador --|> Usuario
 
-    %% RELACIONAMENTOS
-    Equipe "1" --> "0..*" Usuario : possui
-    Equipe "1" --> "0..*" Tarefa : gerencia
-    Usuario "1" --> "0..*" Tarefa : responsavelPor
-    Usuario "1" --> "0..*" Comentario : escreve
-    Usuario "1" --> "0..*" RegistroAtividade : executa
-    Tarefa "1" --> "0..*" Comentario : contem
-    Tarefa "1" --> "0..*" RegistroAtividade : registrado
-    Relatorio "1" --> "1" Usuario : geradoPor
+    %% Relacionamentos
+    Usuario --> Role : ocupa
+    Equipe "1" --> "0..*" Usuario : membros
+    Equipe "1" --> "0..*" Tarefa : tarefas
+    Tarefa "1" --> "1" Usuario : responsavel
+    Tarefa "1" --> "1" Equipe : pertence
+    RecuperacaoSenha "1" --> "1" Usuario : possui
+    Tarefa --> Prioridade
+    Tarefa --> StatusTarefa
+
