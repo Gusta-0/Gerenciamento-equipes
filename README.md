@@ -25,7 +25,7 @@ classDiagram
     class Tarefa {
         <<UUID>> id
         +String titulo
-        +String descricao
+        +String comentario
         +LocalDateTime dataCriacao
         +LocalDate prazo
         +LocalDateTime dataTermino
