@@ -4,9 +4,9 @@
 
 ```mermaid
 classDiagram
-    %% ENTIDADES PRINCIPAIS
+
     class Usuario {
-        <<UUID>> id
+        +UUID id
         +String nome
         +String sobrenome
         +String cpf
@@ -15,54 +15,64 @@ classDiagram
         +String senha
     }
 
-    class Equipe {
-        <<UUID>> id
+    class Administrador {
+        // tipo de Usuario com menos atributos
+    }
+
+    class Role {
+        +UUID id
         +String nome
-        +List<Usuario> membros
-        +List<Tarefa> tarefas
+    }
+
+    class Equipe {
+        +UUID id
+        +String nome
+        +List~Usuario~ membros
+        +List~Tarefa~ tarefas
     }
 
     class Tarefa {
-        <<UUID>> id
+        +UUID id
         +String titulo
         +String comentario
         +LocalDateTime dataCriacao
-        +LocalDate prazo
+        +LocalDateTime prazo
         +LocalDateTime dataTermino
         +Prioridade prioridade
         +StatusTarefa status
-        +Usuario responsavel
-        +Equipe equipe
-        +List<Comentario> comentarios
     }
 
-  
     class RecuperacaoSenha {
-        <<UUID>> id
+        +UUID id
         +String token
         +LocalDateTime dataCriacao
         +LocalDateTime dataExpiracao
-        +Usuario usuario
     }
 
-    %% ENUMS
     class Prioridade {
-        <<enum>>
+        <<enumeration>>
         BAIXA
         MEDIA
         ALTA
     }
 
     class StatusTarefa {
-        <<enum>>
+        <<enumeration>>
         A_FAZER
         EM_ANDAMENTO
         CONCLUIDA
     }
 
-    %% RELACIONAMENTOS
-    Equipe "1" --> "0..*" Usuario : possui
-    Equipe "1" --> "0..*" Tarefa : gerencia
-    Usuario "1" --> "0..*" Tarefa : responsavelPor
-    Usuario "1" --> "0..*" RecuperacaoSenha : possui
+    %% Herança
+    Administrador --|> Usuario
+
+    %% Relacionamentos
+    Usuario --> Role : ocupa
+    Equipe "1" --> "0..*" Usuario : membros
+    Equipe "1" --> "0..*" Tarefa : tarefas
+    Tarefa "1" --> "1" Usuario : responsavel
+    Tarefa "1" --> "1" Equipe : pertence
+    RecuperacaoSenha "1" --> "1" Usuario : possui
+    Tarefa --> Prioridade
+    Tarefa --> StatusTarefa
 
