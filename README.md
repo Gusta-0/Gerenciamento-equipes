@@ -33,7 +33,6 @@ classDiagram
         +StatusTarefa status
         +Usuario responsavel
         +Equipe equipe
-        +List<Comentario> comentarios
     }
 
   
