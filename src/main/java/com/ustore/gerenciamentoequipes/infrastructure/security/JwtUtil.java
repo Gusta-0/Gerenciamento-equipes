@@ -1,4 +1,4 @@
-package com.ustore.gerenciamentoequipes.security;
+package com.ustore.gerenciamentoequipes.infrastructure.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

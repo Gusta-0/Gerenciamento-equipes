@@ -17,12 +17,10 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 public class Tarefa {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @Id @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String titulo;
-    private String descricao;
+    private String comentario;
     private LocalDateTime dataCriacao;
     private LocalDate prazo;
     private LocalDateTime dataTermino;

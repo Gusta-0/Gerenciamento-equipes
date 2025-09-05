@@ -18,8 +18,6 @@ public class Equipe {
     private String nome;
     @OneToMany(mappedBy = "equipe", cascade = CascadeType.ALL)
     private List<Usuario> membros;
-
     @OneToMany(mappedBy = "equipe", cascade = CascadeType.ALL)
     private List<Tarefa> tarefas;
-
 }
