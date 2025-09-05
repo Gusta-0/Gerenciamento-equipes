@@ -36,14 +36,7 @@ classDiagram
         +List<Comentario> comentarios
     }
 
-    class Comentario {
-        <<UUID>> id
-        +String conteudo
-        +LocalDateTime dataCriacao
-        +Usuario autor
-        +Tarefa tarefa
-    }
-
+  
     class RecuperacaoSenha {
         <<UUID>> id
         +String token
@@ -71,7 +64,5 @@ classDiagram
     Equipe "1" --> "0..*" Usuario : possui
     Equipe "1" --> "0..*" Tarefa : gerencia
     Usuario "1" --> "0..*" Tarefa : responsavelPor
-    Usuario "1" --> "0..*" Comentario : escreve
-    Tarefa "1" --> "0..*" Comentario : contem
     Usuario "1" --> "0..*" RecuperacaoSenha : possui
 
