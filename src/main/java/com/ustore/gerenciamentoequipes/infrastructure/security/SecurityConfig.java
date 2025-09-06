@@ -1,4 +1,4 @@
-package com.ustore.gerenciamentoequipes.security;
+package com.ustore.gerenciamentoequipes.infrastructure.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

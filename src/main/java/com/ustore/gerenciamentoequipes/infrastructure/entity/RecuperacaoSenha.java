@@ -2,7 +2,6 @@ package com.ustore.gerenciamentoequipes.infrastructure.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -13,11 +12,10 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 public class RecuperacaoSenha {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @Id @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String token;
-    private LocalDateTime dataCriacao;
+    private LocalDateTime dataSolicitacao;
     private LocalDateTime dataExpiracao;
     @ManyToOne
     @JoinColumn(name = "usuario_id")

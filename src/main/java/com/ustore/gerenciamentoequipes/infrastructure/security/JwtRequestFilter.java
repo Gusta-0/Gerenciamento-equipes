@@ -1,4 +1,4 @@
-package com.ustore.gerenciamentoequipes.security;
+package com.ustore.gerenciamentoequipes.infrastructure.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -45,7 +45,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 }
             }
         }
-
         chain.doFilter(request, response);
     }
 }
