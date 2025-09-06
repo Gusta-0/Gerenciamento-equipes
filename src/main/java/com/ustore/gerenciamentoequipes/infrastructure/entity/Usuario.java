@@ -3,10 +3,13 @@ package com.ustore.gerenciamentoequipes.infrastructure.entity;
 import com.ustore.gerenciamentoequipes.infrastructure.enums.RoleType;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 
+import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 @Entity(name = "usuarios")
@@ -27,4 +30,19 @@ public class Usuario implements UserDetails {
     private RoleType role;
     private String telefone;
     private String senha;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of();
+    }
+
+    @Override
+    public String getPassword() {
+        return senha;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
 }

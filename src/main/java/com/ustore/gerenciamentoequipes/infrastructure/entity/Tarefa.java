@@ -7,6 +7,7 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,10 +24,18 @@ public class Tarefa {
     private String comentario;
     private LocalDateTime dataCriacao;
     private LocalDate prazo;
-    private LocalDateTime dataTermino;
     private Prioridade prioridade;
     private StatusTarefa status;
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     private Usuario responsavel;
+    @ManyToOne
+    @JoinColumn(name = "equipe_id")
+    private Equipe equipe;
+
+    @PrePersist
+    public void prePersist() {
+        this.dataCriacao = LocalDateTime.now();
+    }
+
 }

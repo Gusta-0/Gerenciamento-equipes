@@ -1,5 +1,6 @@
 package com.ustore.gerenciamentoequipes.infrastructure.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,8 +17,7 @@ public class Equipe {
     @Id @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String nome;
-    @OneToMany(mappedBy = "equipe", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "equipe", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Usuario> membros;
-    @OneToMany(mappedBy = "equipe", cascade = CascadeType.ALL)
-    private List<Tarefa> tarefas;
 }
