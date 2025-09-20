@@ -22,9 +22,11 @@ public class Tarefa {
     private UUID id;
     private String titulo;
     private String comentario;
-    private LocalDateTime dataCriacao;
-    private LocalDate prazo;
+    private LocalDate dataCriacao;
+    private LocalDate dataLimite;
+    @Enumerated(EnumType.STRING)
     private Prioridade prioridade;
+    @Enumerated(EnumType.STRING)
     private StatusTarefa status;
     @ManyToOne
     @JoinColumn(name = "usuario_id")
@@ -32,10 +34,5 @@ public class Tarefa {
     @ManyToOne
     @JoinColumn(name = "equipe_id")
     private Equipe equipe;
-
-    @PrePersist
-    public void prePersist() {
-        this.dataCriacao = LocalDateTime.now();
-    }
 
 }
