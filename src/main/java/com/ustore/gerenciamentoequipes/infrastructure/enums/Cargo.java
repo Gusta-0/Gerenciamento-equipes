@@ -1,6 +1,7 @@
 package com.ustore.gerenciamentoequipes.infrastructure.enums;
 
-public enum RoleType {
-    ADMIN,
-    USER
+public enum Cargo {
+    ADMINISTRADOR,
+    GERENTE,
+    MEMBRO
 }

@@ -1,6 +1,6 @@
 package com.ustore.gerenciamentoequipes.service.dto.response;
 
-import com.ustore.gerenciamentoequipes.infrastructure.enums.RoleType;
+import com.ustore.gerenciamentoequipes.infrastructure.enums.Cargo;
 
 import java.util.UUID;
 
@@ -10,8 +10,8 @@ public record UsuarioResponse(
         String sobrenome,
         String cpf,
         String email,
-        RoleType role,
+        Cargo role,
         String telefone,
-        UUID equipeId
+        com.ustore.gerenciamentoequipes.infrastructure.entity.Cargo cargo
 ) {
 }

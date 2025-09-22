@@ -21,18 +21,15 @@ public class Tarefa {
     @Id @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String titulo;
-    private String comentario;
-    private LocalDate dataCriacao;
-    private LocalDate dataLimite;
+    private String descricao;
     @Enumerated(EnumType.STRING)
     private Prioridade prioridade;
-    @Enumerated(EnumType.STRING)
-    private StatusTarefa status;
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     private Usuario responsavel;
-    @ManyToOne
-    @JoinColumn(name = "equipe_id")
-    private Equipe equipe;
-
+    private LocalDate dataVencimento;
+    private String projeto;
+    private String tags;
+    @Enumerated(EnumType.STRING)
+    private StatusTarefa status;
 }

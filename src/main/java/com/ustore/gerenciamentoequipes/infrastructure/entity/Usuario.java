@@ -1,6 +1,6 @@
 package com.ustore.gerenciamentoequipes.infrastructure.entity;
 
-import com.ustore.gerenciamentoequipes.infrastructure.enums.RoleType;
+import com.ustore.gerenciamentoequipes.infrastructure.enums.Cargo;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,15 +19,13 @@ import java.util.UUID;
 public class Usuario implements UserDetails {
     @Id @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    private String nome;
-    private String sobrenome;
-    private String cpf;
+    private String nomeCompleto;
     private String email;
+    private String senha;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private RoleType role;
+    private Cargo cargo;
     private String telefone;
-    private String senha;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
