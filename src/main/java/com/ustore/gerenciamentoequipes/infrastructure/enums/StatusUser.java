@@ -1,5 +1,7 @@
 package com.ustore.gerenciamentoequipes.infrastructure.enums;
 
-public enum Prioridade {
-    BAIXA, MEDIA, ALTA, URGENTE
+public enum StatusUser {
+    ATIVO,
+    INATIVO,
+    PENDENTE
 }
