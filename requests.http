@@ -1,0 +1,46 @@
+
+### Criar um novo usuário
+POST http://localhost:8080/usuario
+Content-Type: application/json
+
+{
+  "nomeCompleto": "João Silva Santos",
+  "email": "joao.silva@empresa.com.br",
+  "senha": "%ChA3IJsWjfVqt",
+  "nivelAcesso": "ADMINISTRADOR",
+  "cargo": "DEVELOPER",
+  "telefone": "(11)98765-4321"
+}
+
+### Login de usuário (gera token JWT)
+POST http://localhost:8080/usuario/login
+Content-Type: application/json
+
+{
+  "email": "gustavo@email.com",
+  "senha": "123456"
+}
+
+### Pesquisa de usuários por nome/email
+GET http://localhost:8080/usuario/usuarios/pesquisa?nome=Gustavo&email=
+Authorization: Bearer {{token}}
+
+### Filtrar usuários por cargo/status/nivel
+GET http://localhost:8080/usuario/usuarios/filtros?cargo=ADMIN&status=ATIVO&nivel=GERENTE
+Authorization: Bearer {{token}}
+
+### Atualizar dados de um usuário
+PATCH http://localhost:8080/usuario
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "id": "uuid-do-usuario",
+  "nome": "Novo Nome",
+  "email": "novoemail@email.com"
+}
+
+
+### Inativar usuário (DELETE por ID)
+DELETE http://localhost:8080/usuario/{{id}}
+Authorization: Bearer {{token}}
