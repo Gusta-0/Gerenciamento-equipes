@@ -4,11 +4,13 @@ import com.ustore.gerenciamentoequipes.infrastructure.entity.Usuario;
 import com.ustore.gerenciamentoequipes.service.dto.request.UsuarioRequest;
 import com.ustore.gerenciamentoequipes.service.dto.response.UsuarioResponse;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = PasswordMapper.class)
 public interface UsuarioMapper {
+    @Mapping(target = "senha", source = "senha", qualifiedByName = "encode")
     Usuario toEntity(UsuarioRequest request);
     UsuarioResponse toResponse(Usuario usuario);
     List<Usuario> toEntityList(List<UsuarioRequest> requests);
