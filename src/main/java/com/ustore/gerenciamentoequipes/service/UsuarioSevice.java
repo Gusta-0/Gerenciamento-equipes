@@ -48,7 +48,7 @@ public class UsuarioSevice {
 
     public void emailExiste(String email) {
         if (usuarioRepository.findByEmail(email).isPresent()) {
-            throw new ConflictException("Email já cadastrado " + email);
+            throw new ConflictException("Email" + email + "já cadastrado!");
         }
     }
 
@@ -120,8 +120,8 @@ public class UsuarioSevice {
 
 
     @Transactional
-    public void inativarUsuario(UUID id) {
-        Usuario usuario = usuarioRepository.findById(id)
+    public void inativarUsuario(String email) {
+        Usuario usuario = usuarioRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
 
         usuario.setStatusUser(StatusUser.INATIVO);

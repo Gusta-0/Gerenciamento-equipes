@@ -1,5 +1,6 @@
 package com.ustore.gerenciamentoequipes.service.dto.request;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,8 +9,9 @@ import lombok.Setter;
 @Setter
 public class UsuarioLogin {
     @NotBlank(message = "Email é obrigatório")
-    private String email;
+    @Email(message = "Formato de email inválido")
+    String email;
 
     @NotBlank(message = "Senha é obrigatória")
-    private String senha;
+    String senha;
 }

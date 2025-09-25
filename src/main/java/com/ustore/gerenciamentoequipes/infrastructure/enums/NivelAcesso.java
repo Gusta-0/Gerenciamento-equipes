@@ -1,7 +1,7 @@
 package com.ustore.gerenciamentoequipes.infrastructure.enums;
 
 public enum NivelAcesso {
-    ADMINISTRADOR,
+    ADMIN,
     GERENTE,
     MEMBRO
 }

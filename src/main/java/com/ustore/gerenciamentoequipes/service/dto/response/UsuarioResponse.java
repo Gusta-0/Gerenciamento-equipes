@@ -1,9 +1,11 @@
 package com.ustore.gerenciamentoequipes.service.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ustore.gerenciamentoequipes.infrastructure.enums.Cargo;
 import com.ustore.gerenciamentoequipes.infrastructure.enums.NivelAcesso;
 import com.ustore.gerenciamentoequipes.infrastructure.enums.StatusUser;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 public record UsuarioResponse(
@@ -13,6 +15,10 @@ public record UsuarioResponse(
         NivelAcesso nivelAcesso,
         Cargo cargo,
         String telefone,
-        StatusUser statusUser
+        StatusUser statusUser,
+        String imagem,
+
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+        LocalDateTime dataCadastro
 ) {
 }
