@@ -15,5 +15,4 @@ public interface UsuarioRepository extends JpaRepository<Usuario, UUID>, JpaSpec
     @Transactional
     void deleteByEmail(String email);
 
-
 }

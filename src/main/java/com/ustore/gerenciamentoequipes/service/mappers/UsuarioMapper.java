@@ -8,9 +8,8 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = PasswordMapper.class)
+@Mapper(componentModel = "spring")
 public interface UsuarioMapper {
-    @Mapping(target = "senha", source = "senha", qualifiedByName = "encode")
     Usuario toEntity(UsuarioRequest request);
     UsuarioResponse toResponse(Usuario usuario);
     List<Usuario> toEntityList(List<UsuarioRequest> requests);

@@ -1,5 +1,6 @@
-package com.ustore.gerenciamentoequipes.infrastructure.entity;
+package com.ustore.gerenciamentoequipes.infrastructure.especifications;
 
+import com.ustore.gerenciamentoequipes.infrastructure.entity.Usuario;
 import com.ustore.gerenciamentoequipes.infrastructure.enums.Cargo;
 import com.ustore.gerenciamentoequipes.infrastructure.enums.NivelAcesso;
 import com.ustore.gerenciamentoequipes.infrastructure.enums.StatusUser;
@@ -10,7 +11,7 @@ public class UsuarioSpecification {
     // 🔎 Pesquisa por texto
     public static Specification<Usuario> comNome(String nome) {
         return (root, query, cb) ->
-                nome == null ? null : cb.like(cb.lower(root.get("nome")), "%" + nome.toLowerCase() + "%");
+                nome == null ? null : cb.like(cb.lower(root.get("nomeCompleto")), "%" + nome.toLowerCase() + "%");
     }
 
     public static Specification<Usuario> comEmail(String email) {
@@ -26,7 +27,7 @@ public class UsuarioSpecification {
 
     public static Specification<Usuario> comStatus(StatusUser status) {
         return (root, query, cb) ->
-                status == null ? null : cb.equal(root.get("status"), status);
+                status == null ? null : cb.equal(root.get("statusUsuario"), status);
     }
 
     public static Specification<Usuario> comCargo(Cargo cargo) {
@@ -36,7 +37,7 @@ public class UsuarioSpecification {
 
     // 🔎 Monta Specification para pesquisa (nome + email)
     public static Specification<Usuario> comPesquisa(String nome, String email) {
-        return Specification.allOf(
+        return Specification.anyOf(
                 comNome(nome),
                 comEmail(email)
         );

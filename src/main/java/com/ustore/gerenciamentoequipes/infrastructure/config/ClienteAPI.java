@@ -93,5 +93,5 @@ public interface ClienteAPI {
             @ApiResponse(responseCode = "404", description = "Colaborador não encontrado",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    void inativar(@Parameter(description = "ID do colaborador") @PathVariable UUID id);
+    void inativar(@Parameter(description = "ID do colaborador")  String email);
 }
