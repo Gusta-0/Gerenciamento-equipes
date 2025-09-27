@@ -4,21 +4,22 @@ POST http://localhost:8080/usuario
 Content-Type: application/json
 
 {
-  "nomeCompleto": "João Silva Santos",
-  "email": "joao.silva@empresa.com.br",
-  "senha": "%ChA3IJsWjfVqt",
-  "nivelAcesso": "ADMINISTRADOR",
-  "cargo": "DEVELOPER",
-  "telefone": "(11)98765-4321"
+  "nomeCompleto": "Carlos Eduardo Santos Silva",
+  "email": "carlos.silva@empresa.com",
+  "senha": "E?a655hMGtptrS1ID$FS4@",
+  "nivelAcesso": "ADMIN",
+  "cargo": "DESENVOLVEDOR",
+  "telefone": "(70)3800-3268"
 }
+
 
 ### Login de usuário (gera token JWT)
 POST http://localhost:8080/usuario/login
 Content-Type: application/json
 
 {
-  "email": "gustavo@email.com",
-  "senha": "123456"
+  "email": "carlos.silva@empresa.com",
+  "senha": "E?a655hMGtptrS1ID$FS4@"
 }
 
 ### Pesquisa de usuários por nome/email
@@ -35,12 +36,15 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "id": "uuid-do-usuario",
-  "nome": "Novo Nome",
-  "email": "novoemail@email.com"
+  "nomeCompleto": "Carlos Eduardo Santos Silva",
+  "email": "carlos.silva@empresa.com",
+  "senha": "E?a655hMGtptrS1ID$FS4@",
+  "nivelAcesso": "ADMIN",
+  "cargo": "DESENVOLVEDOR",
+  "telefone": "(07)7683-6649",
+  "statusUser": "ATIVO"
 }
 
-
 ### Inativar usuário (DELETE por ID)
-DELETE http://localhost:8080/usuario/{{id}}
+DELETE http://localhost:8080/usuario/{{email}}
 Authorization: Bearer {{token}}

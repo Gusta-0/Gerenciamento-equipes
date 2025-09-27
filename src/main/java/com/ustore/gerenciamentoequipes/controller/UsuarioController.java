@@ -12,17 +12,17 @@ import com.ustore.gerenciamentoequipes.service.dto.request.UsuarioUpdateRequest;
 import com.ustore.gerenciamentoequipes.service.dto.response.UsuarioResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/usuario")
@@ -54,7 +54,7 @@ public class UsuarioController implements ClienteAPI{
     public Page<UsuarioResponse> pesquisar(
             @RequestParam(required = false) String nome,
             @RequestParam(required = false) String email,
-            Pageable pageable
+            @ParameterObject Pageable pageable
     ) {
         return usuarioService.pesquisar(nome, email, pageable);
     }
@@ -65,7 +65,7 @@ public class UsuarioController implements ClienteAPI{
             @RequestParam(required = false) Cargo cargo,
             @RequestParam(required = false) StatusUser status,
             @RequestParam(required = false) NivelAcesso nivel,
-            Pageable pageable
+            @ParameterObject Pageable pageable
     ) {
         return usuarioService.filtrar(cargo, status, nivel, pageable);
     }
@@ -77,9 +77,10 @@ public class UsuarioController implements ClienteAPI{
     }
 
     @Override
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{email}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void inativar(@PathVariable UUID id) {
-        usuarioService.inativarUsuario(id);
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
+    public void inativar(@PathVariable String email) {
+        usuarioService.inativarUsuario(email);
     }
 }

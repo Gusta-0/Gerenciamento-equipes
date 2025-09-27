@@ -12,6 +12,7 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 public interface UsuarioUpdateMapper {
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "senha", source = "novaSenha")
     void updateUsuario(UsuarioUpdateRequest request, @MappingTarget Usuario entity);
 }
 

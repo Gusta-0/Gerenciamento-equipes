@@ -1,7 +1,7 @@
 package com.ustore.gerenciamentoequipes.service;
 
 import com.ustore.gerenciamentoequipes.infrastructure.entity.Usuario;
-import com.ustore.gerenciamentoequipes.infrastructure.entity.UsuarioSpecification;
+import com.ustore.gerenciamentoequipes.infrastructure.especifications.UsuarioSpecification;
 import com.ustore.gerenciamentoequipes.infrastructure.enums.Cargo;
 import com.ustore.gerenciamentoequipes.infrastructure.enums.NivelAcesso;
 import com.ustore.gerenciamentoequipes.infrastructure.enums.StatusUser;
@@ -33,8 +33,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.UUID;
-
 @Service
 @RequiredArgsConstructor
 @RequestMapping("/usuario")
@@ -48,7 +46,7 @@ public class UsuarioSevice {
 
     public void emailExiste(String email) {
         if (usuarioRepository.findByEmail(email).isPresent()) {
-            throw new ConflictException("Email já cadastrado " + email);
+            throw new ConflictException("Email" + email + "já cadastrado!");
         }
     }
 
@@ -120,8 +118,8 @@ public class UsuarioSevice {
 
 
     @Transactional
-    public void inativarUsuario(UUID id) {
-        Usuario usuario = usuarioRepository.findById(id)
+    public void inativarUsuario(String email) {
+        Usuario usuario = usuarioRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
 
         usuario.setStatusUser(StatusUser.INATIVO);

@@ -8,6 +8,7 @@ import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -22,19 +23,29 @@ public class Usuario implements UserDetails {
     @Id @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String nomeCompleto;
+    @Column(unique = true, nullable = false)
     private String email;
     private String senha;
     @Enumerated(EnumType.STRING)
     private NivelAcesso nivelAcesso;
+    @Enumerated(EnumType.STRING)
     private Cargo cargo;
     private String telefone;
-    private StatusUser statusUser;
+    private String imagem;
+    private LocalDateTime dataCadastro;
+    @Enumerated(EnumType.STRING)
+    private StatusUser statusUser = StatusUser.ATIVO;
+
+    @PrePersist
+    public void prePersist() {
+        this.dataCadastro = LocalDateTime.now();
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        // retorna a lista de permissões do usuário
+        return List.of(() -> "ROLE_" + this.getUsername() + "_" + this.nivelAcesso.name());
     }
-
     @Override
     public String getPassword() {
         return senha;
