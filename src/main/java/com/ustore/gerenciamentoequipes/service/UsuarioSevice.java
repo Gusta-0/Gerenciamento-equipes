@@ -1,7 +1,7 @@
 package com.ustore.gerenciamentoequipes.service;
 
 import com.ustore.gerenciamentoequipes.infrastructure.entity.Usuario;
-import com.ustore.gerenciamentoequipes.infrastructure.entity.UsuarioSpecification;
+import com.ustore.gerenciamentoequipes.infrastructure.especifications.UsuarioSpecification;
 import com.ustore.gerenciamentoequipes.infrastructure.enums.Cargo;
 import com.ustore.gerenciamentoequipes.infrastructure.enums.NivelAcesso;
 import com.ustore.gerenciamentoequipes.infrastructure.enums.StatusUser;
@@ -32,8 +32,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
