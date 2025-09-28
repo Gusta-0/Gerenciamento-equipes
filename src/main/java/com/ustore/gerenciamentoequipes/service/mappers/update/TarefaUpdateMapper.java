@@ -7,12 +7,13 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
-//@Mapper(componentModel = "spring",
-//        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-//public interface TarefaUpdateMapper {
-//
-//    @Mapping(target = "id", ignore = true)
-//    @Mapping(target = "equipe", ignore = true) // precisa ser resolvido via repository
-//    void updateTarefa(TarefaRequest request, @MappingTarget Tarefa entity);
-//}
+@Mapper(componentModel = "spring",
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+public interface TarefaUpdateMapper {
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "equipe", ignore = true)
+    @Mapping(target = "responsaveis", ignore = true) // também tratado no Service
+    void updateTarefa(TarefaRequest request, @MappingTarget Tarefa entity);
+}
 

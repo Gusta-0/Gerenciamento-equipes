@@ -2,26 +2,37 @@ package com.ustore.gerenciamentoequipes.service.dto.request;
 
 import com.ustore.gerenciamentoequipes.infrastructure.enums.Prioridade;
 import com.ustore.gerenciamentoequipes.infrastructure.enums.StatusTarefa;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Set;
 import java.util.UUID;
 
 public record TarefaRequest(
         @NotBlank(message = "O título é obrigatório")
-        @Size(min = 3, max = 100, message = "O título deve ter entre 3 e 100 caracteres")
+        @Size(max = 150, message = "O título deve ter no máximo 150 caracteres")
         String titulo,
+
+        @Size(max = 500, message = "O comentário deve ter no máximo 500 caracteres")
         String comentario,
-        LocalDateTime dataCriacao,
-        LocalDate prazo,
-        Prioridade prioridade,
+
+        @NotBlank(message = "O status é obrigatório")
+        @Pattern(regexp = "A FAZER | EM PROGRESSO | REVISÃO | CONCLUÍDA", message = "Status inválido")
         StatusTarefa status,
-        @NotNull(message = "O ID da equipe é obrigatório")
-        UUID equipeId,
-        @NotNull(message = "O ID do usuário responsável é obrigatório")
-        UUID usuarioId
+
+        @NotBlank(message = "A prioridade é obrigatória")
+        @Pattern(regexp = "BAIXA|MEDIA|ALTA|URGENTE", message = "Prioridade inválida")
+        Prioridade prioridade,
+
+        @FutureOrPresent(message = "A data de entrega deve ser no futuro ou hoje")
+        LocalDateTime dataEntrega,
+
+        @Size(max = 100, message = "O nome do projeto deve ter no máximo 100 caracteres")
+        String projeto,
+
+        String tags,
+
+        @NotNull(message = "É necessário atribuir pelo menos um responsável")
+        Set<UUID> responsaveisIds
 ) {
 }
