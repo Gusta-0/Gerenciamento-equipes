@@ -3,22 +3,24 @@ package com.ustore.gerenciamentoequipes.service;
 import com.ustore.gerenciamentoequipes.infrastructure.entity.Tarefa;
 import com.ustore.gerenciamentoequipes.infrastructure.entity.Usuario;
 import com.ustore.gerenciamentoequipes.infrastructure.enums.StatusTarefa;
+import com.ustore.gerenciamentoequipes.infrastructure.especifications.TarefaSpecification;
 import com.ustore.gerenciamentoequipes.infrastructure.exception.ResourceNotFoundException;
 import com.ustore.gerenciamentoequipes.infrastructure.repository.TarefaRepository;
 import com.ustore.gerenciamentoequipes.infrastructure.repository.UsuarioRepository;
+import com.ustore.gerenciamentoequipes.service.dto.request.TarefaFiltroRequest;
 import com.ustore.gerenciamentoequipes.service.dto.request.TarefaRequest;
 import com.ustore.gerenciamentoequipes.service.dto.request.TarefaUpdateRequest;
 import com.ustore.gerenciamentoequipes.service.dto.response.TarefaResponse;
 import com.ustore.gerenciamentoequipes.service.mappers.TarefaMapper;
 import com.ustore.gerenciamentoequipes.service.mappers.update.TarefaUpdateMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -48,6 +50,13 @@ public class TarefaService {
         tarefaRepository.save(tarefa);
 
         return tarefaMapper.toResponse(tarefa);
+    }
+
+    public Page<TarefaResponse> filtrar(TarefaFiltroRequest filtro, Pageable pageable) {
+        return tarefaRepository.findAll(
+                TarefaSpecification.comFiltros(filtro),
+                pageable
+        ).map(tarefaMapper::toResponse);
     }
 
     public TarefaResponse atualizarTarefa(UUID tarefaId, TarefaUpdateRequest updateRequest) {

@@ -8,7 +8,6 @@ import org.springframework.data.jpa.domain.Specification;
 
 public class UsuarioSpecification {
 
-    // 🔎 Pesquisa por texto
     public static Specification<Usuario> comNome(String nome) {
         return (root, query, cb) ->
                 nome == null ? null : cb.like(cb.lower(root.get("nomeCompleto")), "%" + nome.toLowerCase() + "%");
@@ -19,7 +18,6 @@ public class UsuarioSpecification {
                 email == null ? null : cb.like(cb.lower(root.get("email")), "%" + email.toLowerCase() + "%");
     }
 
-    // 🔘 Filtros (botões)
     public static Specification<Usuario> comNivelAcesso(NivelAcesso nivelAcesso) {
         return (root, query, cb) ->
                 nivelAcesso == null ? null : cb.equal(root.get("nivelAcesso"), nivelAcesso);
@@ -35,7 +33,6 @@ public class UsuarioSpecification {
                 cargo == null ? null : cb.equal(root.get("cargo"), cargo);
     }
 
-    // 🔎 Monta Specification para pesquisa (nome + email)
     public static Specification<Usuario> comPesquisa(String nome, String email) {
         return Specification.anyOf(
                 comNome(nome),
@@ -44,7 +41,6 @@ public class UsuarioSpecification {
 
     }
 
-    // 🔘 Monta Specification para filtros (cargo + status + nivel)
     public static Specification<Usuario> comFiltros(Cargo cargo, StatusUser status, NivelAcesso nivel) {
         return Specification.allOf(
                 comCargo(cargo),

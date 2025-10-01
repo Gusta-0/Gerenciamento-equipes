@@ -2,11 +2,14 @@ package com.ustore.gerenciamentoequipes.controller;
 
 import com.ustore.gerenciamentoequipes.infrastructure.config.TarefaAPI;
 import com.ustore.gerenciamentoequipes.service.TarefaService;
+import com.ustore.gerenciamentoequipes.service.dto.request.TarefaFiltroRequest;
 import com.ustore.gerenciamentoequipes.service.dto.request.TarefaRequest;
 import com.ustore.gerenciamentoequipes.service.dto.request.TarefaUpdateRequest;
 import com.ustore.gerenciamentoequipes.service.dto.response.TarefaResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +26,15 @@ public class TarefaController implements TarefaAPI {
     @PostMapping
     public ResponseEntity<TarefaResponse> criarTarefa(@RequestBody @Valid TarefaRequest request) {
         return ResponseEntity.ok(tarefaService.criarTarefa(request));
+    }
+
+    @Override
+    @GetMapping("/filtrar")
+    public ResponseEntity<Page<TarefaResponse>> filtrar(
+            @ModelAttribute TarefaFiltroRequest filtro,
+            Pageable pageable
+    ) {
+        return ResponseEntity.ok(tarefaService.filtrar(filtro, pageable));
     }
 
     @Override
