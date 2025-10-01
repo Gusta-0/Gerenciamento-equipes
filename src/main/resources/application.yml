@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: Prod
+    active: dev
 
 ---
 
@@ -10,10 +10,10 @@ spring:
       on-profile: prod
 
   datasource:
-    url: jdbc:postgresql://db:5432/db_clientes
-    driver-class-name: org.postgresql.Driver
-    username: admin
-    password: admin123
+      url: jdbc:postgresql://localhost:5432/gerenciamento_de_clientes
+      username: admin
+      password: admin123
+      driver-class-name: org.postgresql.Driver
 
   jpa:
     hibernate:
@@ -54,7 +54,3 @@ logging:
               BasicBinder: TRACE
 
 
-
-jackson:
-  mapper:
-    accept-case-insensitive-enums: true

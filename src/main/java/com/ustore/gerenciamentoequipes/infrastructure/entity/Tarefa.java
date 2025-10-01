@@ -4,32 +4,36 @@ import com.ustore.gerenciamentoequipes.infrastructure.enums.Prioridade;
 import com.ustore.gerenciamentoequipes.infrastructure.enums.StatusTarefa;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
-@Entity(name = "tarefa")
+@Entity
+@Table(name = "tarefas")
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class Tarefa {
     @Id @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String titulo;
     private String descricao;
-    @Enumerated(EnumType.STRING)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "criador_id", nullable = false)
+    private Usuario criador;
+    private StatusTarefa status = StatusTarefa.A_FAZER;
     private Prioridade prioridade;
-    @ManyToOne
-    @JoinColumn(name = "usuario_id")
-    private Usuario responsavel;
-    private LocalDate dataVencimento;
+    private LocalDateTime dataEntrega;
     private String projeto;
     private String tags;
-    @Enumerated(EnumType.STRING)
-    private StatusTarefa status;
+
+    @CreationTimestamp
+    private LocalDateTime dataCriacao;
+
+    @ManyToOne
+    @JoinColumn(name = "usuario_id", nullable = false)
+    private Usuario responsavel;
 }

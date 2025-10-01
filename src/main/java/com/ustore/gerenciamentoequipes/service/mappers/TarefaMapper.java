@@ -8,12 +8,17 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-//@Mapper(componentModel = "spring")
-//public interface TarefaMapper {
-//    @Mapping(target = "equipe", ignore = true) // será setado no Service via repository
-//    Tarefa toEntity(TarefaRequest request);
-//    @Mapping(target = "equipeId", source = "equipe.id")
-//    TarefaResponse toResponse(Tarefa tarefa);
-//    List<Tarefa> toEntityList(List<TarefaRequest> requests);
-//    List<TarefaResponse> toResponseList(List<Tarefa> tarefas);
-//}
+@Mapper(componentModel = "spring", uses = UsuarioResumeMapper.class)
+public interface TarefaMapper {
+
+    @Mapping(target = "responsavel", ignore = true) // resolvido no Service com usuarioRepository
+    Tarefa toEntity(TarefaRequest request);
+
+    @Mapping(target = "criador", source = "criador.nomeCompleto")
+    @Mapping(target = "responsavel", source = "responsavel")
+    TarefaResponse toResponse(Tarefa tarefa);
+
+    List<Tarefa> toEntityList(List<TarefaRequest> requests);
+    List<TarefaResponse> toResponseList(List<Tarefa> tarefas);
+}
+
