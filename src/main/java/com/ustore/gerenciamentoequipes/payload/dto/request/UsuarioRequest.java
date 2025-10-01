@@ -1,6 +1,7 @@
 package com.ustore.gerenciamentoequipes.payload.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.ustore.gerenciamentoequipes.core.entity.Usuario;
 import com.ustore.gerenciamentoequipes.enums.Cargo;
 import com.ustore.gerenciamentoequipes.enums.NivelAcesso;
 import jakarta.validation.constraints.*;
@@ -35,4 +36,25 @@ public record UsuarioRequest(
         )
         String telefone
 ) {
+        public UsuarioRequest(Usuario usuario) {
+                this(
+                        usuario.getNomeCompleto(),
+                        usuario.getEmail(),
+                        usuario.getSenha(),
+                        usuario.getNivelAcesso(),
+                        usuario.getCargo(),
+                        usuario.getTelefone()
+                );
+        }
+
+        public Usuario toUsuario() {
+                return Usuario.builder()
+                        .nomeCompleto(this.nomeCompleto)
+                        .email(this.email)
+                        .senha(this.senha)
+                        .nivelAcesso(this.nivelAcesso)
+                        .cargo(this.cargo)
+                        .telefone(this.telefone)
+                        .build();
+        }
 }

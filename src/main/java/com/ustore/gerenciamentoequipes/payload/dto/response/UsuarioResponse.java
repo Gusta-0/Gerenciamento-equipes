@@ -1,6 +1,7 @@
 package com.ustore.gerenciamentoequipes.payload.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.ustore.gerenciamentoequipes.core.entity.Usuario;
 import com.ustore.gerenciamentoequipes.enums.Cargo;
 import com.ustore.gerenciamentoequipes.enums.NivelAcesso;
 import com.ustore.gerenciamentoequipes.enums.StatusUser;
@@ -21,4 +22,17 @@ public record UsuarioResponse(
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         LocalDateTime dataCadastro
 ) {
+        public UsuarioResponse (Usuario usuario){
+            this(
+                    usuario.getId(),
+                    usuario.getNomeCompleto(),
+                    usuario.getEmail(),
+                    usuario.getNivelAcesso(),
+                    usuario.getCargo(),
+                    usuario.getTelefone(),
+                    usuario.getStatusUser(),
+                    usuario.getImagem(),
+                    usuario.getDataCadastro()
+            );
+        }
 }

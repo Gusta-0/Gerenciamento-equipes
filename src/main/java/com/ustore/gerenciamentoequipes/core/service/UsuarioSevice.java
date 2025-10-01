@@ -50,11 +50,14 @@ public class UsuarioSevice {
 
     public UsuarioResponse salvaUsuario(UsuarioRequest usuarioRequest) {
         emailExiste(usuarioRequest.email());
-        Usuario usuario = usuarioMapper.toEntity(usuarioRequest);
+        Usuario usuario = usuarioRequest.toUsuario();
+
         usuario.setStatusUser(StatusUser.ATIVO);
         usuario.setSenha(passwordEncoder.encode(usuarioRequest.senha()));
+
         Usuario usuarioSalvo = usuarioRepository.save(usuario);
-        return usuarioMapper.toResponse(usuarioSalvo);
+
+        return new UsuarioResponse(usuarioSalvo);
     }
 
     public String autenticarCliente(UsuarioLogin dto) {
