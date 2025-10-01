@@ -20,11 +20,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.ErrorResponse;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.UUID;
 
 @Tag(name = "Colaboradores", description = "Gerenciamento de colaboradores")
 public interface ClienteAPI {
@@ -50,6 +47,7 @@ public interface ClienteAPI {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     String login(@Valid @RequestBody UsuarioLogin dto);
+
 
     @Operation(summary = "Pesquisar colaboradores",
             description = "Pesquisa colaboradores por nome e/ou email")

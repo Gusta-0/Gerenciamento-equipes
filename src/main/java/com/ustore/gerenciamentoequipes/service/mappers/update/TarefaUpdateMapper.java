@@ -11,9 +11,9 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface TarefaUpdateMapper {
 
-    @Mapping(target = "criador", ignore = true) // opcional, se nunca quiser atualizar criador
+    @Mapping(target = "criador", ignore = true)
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "responsavel", ignore = true) // também tratado no Service
+    @Mapping(target = "responsavel", ignore = true)
     void updateTarefa(TarefaUpdateRequest updateRequest, @MappingTarget Tarefa entity);
 }
 

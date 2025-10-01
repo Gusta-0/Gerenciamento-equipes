@@ -6,7 +6,6 @@ import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 public record TarefaUpdateRequest(
         @Size(max = 150, message = "O título deve ter no máximo 150 caracteres")

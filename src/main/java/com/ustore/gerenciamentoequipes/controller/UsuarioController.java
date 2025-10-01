@@ -79,7 +79,7 @@ public class UsuarioController implements ClienteAPI{
     @Override
     @DeleteMapping("/{email}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE')")
     public void inativar(@PathVariable String email) {
         usuarioService.inativarUsuario(email);
     }
