@@ -1,10 +1,10 @@
 package com.ustore.gerenciamentoequipes.service;
 
 import com.ustore.gerenciamentoequipes.infrastructure.entity.Usuario;
-import com.ustore.gerenciamentoequipes.infrastructure.especifications.UsuarioSpecification;
 import com.ustore.gerenciamentoequipes.infrastructure.enums.Cargo;
 import com.ustore.gerenciamentoequipes.infrastructure.enums.NivelAcesso;
 import com.ustore.gerenciamentoequipes.infrastructure.enums.StatusUser;
+import com.ustore.gerenciamentoequipes.infrastructure.especifications.UsuarioSpecification;
 import com.ustore.gerenciamentoequipes.infrastructure.exception.ConflictException;
 import com.ustore.gerenciamentoequipes.infrastructure.exception.ResourceNotFoundException;
 import com.ustore.gerenciamentoequipes.infrastructure.exception.UnauthorizedException;
@@ -31,11 +31,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @Service
 @RequiredArgsConstructor
-@RequestMapping("/usuario")
 public class UsuarioSevice {
     private final UsuarioRepository usuarioRepository;
     private final UsuarioMapper usuarioMapper;

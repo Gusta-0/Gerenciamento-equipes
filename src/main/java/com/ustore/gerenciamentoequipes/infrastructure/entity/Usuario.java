@@ -21,7 +21,7 @@ public class Usuario implements UserDetails {
     @Id @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String nomeCompleto;
-    @Column(unique = true, nullable = false)
+    @Column(name = "username", unique = true, nullable = false)
     private String email;
     private String senha;
     @Enumerated(EnumType.STRING)
@@ -34,7 +34,7 @@ public class Usuario implements UserDetails {
     @Enumerated(EnumType.STRING)
     private StatusUser statusUser = StatusUser.ATIVO;
 
-    @ManyToMany(mappedBy = "responsaveis")
+    @OneToMany(mappedBy = "responsavel")
     private Set<Tarefa> tarefas = new HashSet<>();
 
     @PrePersist

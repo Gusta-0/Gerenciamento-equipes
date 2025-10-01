@@ -1,13 +1,13 @@
 package com.ustore.gerenciamentoequipes.infrastructure.entity;
 
+import com.ustore.gerenciamentoequipes.infrastructure.enums.Prioridade;
+import com.ustore.gerenciamentoequipes.infrastructure.enums.StatusTarefa;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Table(name = "tarefas")
@@ -20,9 +20,12 @@ public class Tarefa {
     @Id @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String titulo;
-    private String comentario;
-    private String status;
-    private String prioridade;
+    private String descricao;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "criador_id", nullable = false)
+    private Usuario criador;
+    private StatusTarefa status = StatusTarefa.A_FAZER;
+    private Prioridade prioridade;
     private LocalDateTime dataEntrega;
     private String projeto;
     private String tags;
@@ -30,12 +33,7 @@ public class Tarefa {
     @CreationTimestamp
     private LocalDateTime dataCriacao;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "tarefa_usuario",
-            joinColumns = @JoinColumn(name = "tarefa_id"),
-            inverseJoinColumns = @JoinColumn(name = "usuario_id")
-    )
-    private Set<Usuario> responsaveis = new HashSet<>();
-
+    @ManyToOne
+    @JoinColumn(name = "usuario_id", nullable = false)
+    private Usuario responsavel;
 }

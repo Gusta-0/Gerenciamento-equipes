@@ -2,15 +2,26 @@
 ### Criar um novo usuário
 POST http://localhost:8080/usuario
 Content-Type: application/json
-
-{
+[
+  {
   "nomeCompleto": "Carlos Eduardo Santos Silva",
   "email": "carlos.silva@empresa.com",
   "senha": "E?a655hMGtptrS1ID$FS4@",
   "nivelAcesso": "ADMIN",
   "cargo": "DESENVOLVEDOR",
   "telefone": "(70)3800-3268"
-}
+  },
+    {
+  "nomeCompleto": "João Silva Santos",
+  "email": "joao.silva@empresa.com.br",
+  "senha": "ilJ%z6xP8Vj6DMRdqFh7IkjjAmH?GprKHDKjVCCfX6oUi32MCT%ChA3IJsWjfVqt",
+  "nivelAcesso": "MEMBRO",
+  "cargo": "GERENTE",
+  "telefone": "(11) 98765-4321"
+   }
+]
+
+
 
 
 ### Login de usuário (gera token JWT)
@@ -48,3 +59,20 @@ Authorization: Bearer {{token}}
 ### Inativar usuário (DELETE por ID)
 DELETE http://localhost:8080/usuario/{{email}}
 Authorization: Bearer {{token}}
+
+### Criar Tarefa
+POST http://localhost:8080/api/tarefas
+Content-Type: application/json
+Authorization: Bearer {{jwt_token}}
+
+{
+  "titulo": "Criar site institucional",
+  "descricao": "Landing page simples para divulgação",
+  "status": "A_FAZER",
+  "prioridade": "BAIXA",
+  "dataEntrega": "2025-12-29T21:02:23.058Z",
+  "projeto": "Portal Corporativo",
+  "tags": "#frontend #landingpage",
+  "responsavelId": "9ab1524c-de80-4cfa-a230-276cb7fe2f92"
+
+}
