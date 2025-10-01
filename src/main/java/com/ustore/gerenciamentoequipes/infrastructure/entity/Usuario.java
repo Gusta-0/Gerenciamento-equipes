@@ -9,9 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Entity(name = "usuario")
 @Getter
@@ -23,7 +21,7 @@ public class Usuario implements UserDetails {
     @Id @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String nomeCompleto;
-    @Column(unique = true, nullable = false)
+    @Column(name = "username", unique = true, nullable = false)
     private String email;
     private String senha;
     @Enumerated(EnumType.STRING)
@@ -35,6 +33,9 @@ public class Usuario implements UserDetails {
     private LocalDateTime dataCadastro;
     @Enumerated(EnumType.STRING)
     private StatusUser statusUser = StatusUser.ATIVO;
+
+    @OneToMany(mappedBy = "responsavel")
+    private Set<Tarefa> tarefas = new HashSet<>();
 
     @PrePersist
     public void prePersist() {

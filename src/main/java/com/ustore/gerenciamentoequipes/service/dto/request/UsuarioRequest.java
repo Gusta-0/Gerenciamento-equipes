@@ -1,9 +1,11 @@
 package com.ustore.gerenciamentoequipes.service.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ustore.gerenciamentoequipes.infrastructure.enums.Cargo;
 import com.ustore.gerenciamentoequipes.infrastructure.enums.NivelAcesso;
 import jakarta.validation.constraints.*;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public record UsuarioRequest(
         @NotBlank(message = "O nome é obrigatório")
         @Size(min = 10, max = 100, message = "O nome deve ter entre 10 e 100 caracteres")
@@ -32,7 +34,5 @@ public record UsuarioRequest(
                 message = "Telefone inválido. Use o formato (XX) XXXXX-XXXX"
         )
         String telefone
-
-
 ) {
 }
