@@ -1,5 +1,6 @@
 package com.ustore.gerenciamentoequipes.infrastructure.config;
 
+import com.ustore.gerenciamentoequipes.service.dto.request.TarefaFiltroRequest;
 import com.ustore.gerenciamentoequipes.service.dto.request.TarefaRequest;
 import com.ustore.gerenciamentoequipes.service.dto.request.TarefaUpdateRequest;
 import com.ustore.gerenciamentoequipes.service.dto.response.TarefaResponse;
@@ -10,8 +11,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.ErrorResponse;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -33,6 +39,30 @@ public interface TarefaAPI {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     ResponseEntity<TarefaResponse> criarTarefa(@Valid @RequestBody TarefaRequest tarefaRequest);
+
+    @Operation(
+            summary = "Filtrar tarefas",
+            description = "Retorna uma lista paginada de tarefas de acordo com os filtros informados. "
+                    + "Todos os parâmetros são opcionais e podem ser combinados. \n\n"
+                    + "- **nomeIntegrante**: pesquisa no nome do criador ou responsável da tarefa \n"
+                    + "- **status**: A_FAZER, EM_PROGRESSO, REVISAO, CONCLUIDA \n"
+                    + "- **prioridade**: BAIXA, MEDIA, ALTA, URGENTE \n"
+                    + "- **responsavelId**: ID do responsável vinculado à tarefa \n"
+                    + "- **departamento**: Cargo/Departamento vinculado à tarefa \n"
+                    + "- **projeto**: Nome (ou parte do nome) do projeto \n"
+                    + "- **dataInicio / dataFim**: intervalo de datas de entrega \n"
+                    + "- **somenteAtrasadas**: quando `true`, retorna apenas tarefas atrasadas"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Lista de tarefas filtradas retornada com sucesso",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Page.class))),
+            @ApiResponse(responseCode = "400", description = "Parâmetros de filtro inválidos"),
+            @ApiResponse(responseCode = "500", description = "Erro interno no servidor")
+    })
+    @GetMapping("/filtrar")
+    ResponseEntity<Page<TarefaResponse>> filtrar(@ParameterObject @ModelAttribute TarefaFiltroRequest filtro,
+                                                 @ParameterObject Pageable pageable);
 
     @Operation(
             summary = "Atualizar tarefa existente",
