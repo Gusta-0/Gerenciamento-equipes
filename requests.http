@@ -3,26 +3,39 @@
 POST http://localhost:8080/usuario
 Content-Type: application/json
 [
-  {
-  "nomeCompleto": "Carlos Eduardo Santos Silva",
-  "email": "carlos.silva@empresa.com",
-  "senha": "E?a655hMGtptrS1ID$FS4@",
-  "nivelAcesso": "ADMIN",
-  "cargo": "DESENVOLVEDOR",
-  "telefone": "(70)3800-3268"
+   {
+    "nomeCompleto": "Ana Maria Oliveira Costa",
+    "email": "ana.costa@empresa.com",
+    "senha": "KKkkkjjjjj33@",
+    "nivelAcesso": "ADMIN",
+    "cargo": "DESENVOLVEDOR",
+    "telefone": "(21)99876-5432"
   },
-    {
-  "nomeCompleto": "João Silva Santos",
-  "email": "joao.silva@empresa.com.br",
-  "senha": "ilJ%z6xP8Vj6DMRdqFh7IkjjAmH?GprKHDKjVCCfX6oUi32MCT%ChA3IJsWjfVqt",
-  "nivelAcesso": "MEMBRO",
-  "cargo": "GERENTE",
-  "telefone": "(11) 98765-4321"
-   }
+  {
+    "nomeCompleto": "Pedro Henrique Almeida",
+    "email": "pedro.almeida@empresa.com",
+    "senha": "Yw7$hN9pM4kL#vB2",
+    "nivelAcesso": "MEMBRO",
+    "cargo": "GERENTE",
+    "telefone": "(11)97654-3210"
+  },
+  {
+    "nomeCompleto": "Mariana Santos Lima",
+    "email": "mariana.lima@empresa.com",
+    "senha": "Qz5#jX8nV3mK$pL7",
+    "nivelAcesso": "MEMBRO",
+    "cargo": "DESENVOLVEDOR",
+    "telefone": "(31)98765-4321"
+  },
+  {
+    "nomeCompleto": "Lucas Fernandes Souza",
+    "email": "lucas.souza@empresa.com",
+    "senha": "Ht6@wR4cB9dM$nE2",
+    "nivelAcesso": "MEMBRO",
+    "cargo": "GERENTE",
+    "telefone": "(47)99632-8521"
+  }
 ]
-
-
-
 
 ### Login de usuário (gera token JWT)
 POST http://localhost:8080/usuario/login

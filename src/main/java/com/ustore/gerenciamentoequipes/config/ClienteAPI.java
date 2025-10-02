@@ -20,8 +20,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.ErrorResponse;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.nio.file.AccessDeniedException;
+import java.util.UUID;
 
 @Tag(name = "Colaboradores", description = "Gerenciamento de colaboradores")
 public interface ClienteAPI {
@@ -72,24 +76,44 @@ public interface ClienteAPI {
             Pageable pageable
     );
 
-    @Operation(summary = "Atualizar dados do colaborador",
-            description = "Atualiza os dados de um colaborador existente")
+    @Operation(
+            summary = "Atualizar dados do colaborador",
+            description = "Atualiza os dados de um colaborador existente. " +
+                    "Usuários comuns só podem alterar os próprios dados. " +
+                    "Admins e Gerentes podem alterar qualquer colaborador."
+    )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Colaborador atualizado com sucesso",
                     content = @Content(schema = @Schema(implementation = UsuarioResponse.class))),
             @ApiResponse(responseCode = "400", description = "Dados inválidos",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "403", description = "Sem permissão para atualizar este colaborador",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "404", description = "Colaborador não encontrado",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    ResponseEntity<UsuarioResponse> atualizaDadoUsuario(@Valid @RequestBody UsuarioUpdateRequest dto);
+    ResponseEntity<UsuarioResponse> atualizaDadoUsuario(
+            @Parameter(description = "ID do colaborador a ser atualizado", required = true)
+            @PathVariable UUID id,
 
-    @Operation(summary = "Inativar colaborador",
-            description = "Inativa um colaborador (delete lógico)")
+            @Valid @RequestBody UsuarioUpdateRequest dto
+    ) throws AccessDeniedException;
+
+    @Operation(
+            summary = "Inativar colaborador",
+            description = "Inativa um colaborador (delete lógico). " +
+                    "Apenas Admins e Gerentes têm permissão para esta ação."
+    )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Colaborador inativado com sucesso"),
+            @ApiResponse(responseCode = "403", description = "Sem permissão para inativar este colaborador",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "404", description = "Colaborador não encontrado",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    void inativar(@Parameter(description = "ID do colaborador")  String email);
+    void inativar(
+            @Parameter(description = "ID do colaborador a ser inativado", required = true)
+            @PathVariable UUID id
+    ) throws AccessDeniedException;
+
 }
