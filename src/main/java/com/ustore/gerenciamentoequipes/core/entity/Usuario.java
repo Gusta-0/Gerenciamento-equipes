@@ -44,7 +44,6 @@ public class Usuario implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // retorna a lista de permissões do usuário
         return List.of(() -> "ROLE_" + this.getUsername() + "_" + this.nivelAcesso.name());
     }
     @Override

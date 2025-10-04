@@ -1,15 +1,14 @@
 package com.ustore.gerenciamentoequipes.core.controller;
 
 import com.ustore.gerenciamentoequipes.config.ClienteAPI;
+import com.ustore.gerenciamentoequipes.core.service.UsuarioSevice;
 import com.ustore.gerenciamentoequipes.enums.Cargo;
 import com.ustore.gerenciamentoequipes.enums.NivelAcesso;
 import com.ustore.gerenciamentoequipes.enums.StatusUser;
-import com.ustore.gerenciamentoequipes.payload.dto.request.LoginRequest;
-import com.ustore.gerenciamentoequipes.security.JwtUtil;
-import com.ustore.gerenciamentoequipes.core.service.UsuarioSevice;
 import com.ustore.gerenciamentoequipes.payload.dto.request.UsuarioRequest;
 import com.ustore.gerenciamentoequipes.payload.dto.request.UsuarioUpdateRequest;
 import com.ustore.gerenciamentoequipes.payload.dto.response.UsuarioResponse;
+import com.ustore.gerenciamentoequipes.security.JwtUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
@@ -19,8 +18,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 

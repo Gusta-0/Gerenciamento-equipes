@@ -4,7 +4,6 @@ package com.ustore.gerenciamentoequipes.config;
 import com.ustore.gerenciamentoequipes.enums.Cargo;
 import com.ustore.gerenciamentoequipes.enums.NivelAcesso;
 import com.ustore.gerenciamentoequipes.enums.StatusUser;
-import com.ustore.gerenciamentoequipes.payload.dto.request.LoginRequest;
 import com.ustore.gerenciamentoequipes.payload.dto.request.UsuarioRequest;
 import com.ustore.gerenciamentoequipes.payload.dto.request.UsuarioUpdateRequest;
 import com.ustore.gerenciamentoequipes.payload.dto.response.UsuarioResponse;
