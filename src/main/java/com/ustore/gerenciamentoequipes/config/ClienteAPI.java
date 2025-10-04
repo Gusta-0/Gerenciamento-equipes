@@ -4,7 +4,7 @@ package com.ustore.gerenciamentoequipes.config;
 import com.ustore.gerenciamentoequipes.enums.Cargo;
 import com.ustore.gerenciamentoequipes.enums.NivelAcesso;
 import com.ustore.gerenciamentoequipes.enums.StatusUser;
-import com.ustore.gerenciamentoequipes.payload.dto.request.UsuarioLogin;
+import com.ustore.gerenciamentoequipes.payload.dto.request.LoginRequest;
 import com.ustore.gerenciamentoequipes.payload.dto.request.UsuarioRequest;
 import com.ustore.gerenciamentoequipes.payload.dto.request.UsuarioUpdateRequest;
 import com.ustore.gerenciamentoequipes.payload.dto.response.UsuarioResponse;
@@ -41,16 +41,6 @@ public interface ClienteAPI {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     ResponseEntity<UsuarioResponse> salvaUsuario(@Valid @RequestBody UsuarioRequest usuarioRequest);
-
-    @Operation(summary = "Login",
-            description = "Autentica colaborador e retorna um token JWT")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Login realizado com sucesso",
-                    content = @Content(schema = @Schema(example = "{ \"token\": \"jwt_token_aqui\" }"))),
-            @ApiResponse(responseCode = "401", description = "Credenciais inválidas",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    })
-    String login(@Valid @RequestBody UsuarioLogin dto);
 
 
     @Operation(summary = "Pesquisar colaboradores",

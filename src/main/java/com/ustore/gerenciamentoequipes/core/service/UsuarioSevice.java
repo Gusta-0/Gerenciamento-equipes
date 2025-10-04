@@ -1,31 +1,25 @@
 package com.ustore.gerenciamentoequipes.core.service;
 
 import com.ustore.gerenciamentoequipes.core.entity.Usuario;
+import com.ustore.gerenciamentoequipes.core.especifications.UsuarioSpecification;
+import com.ustore.gerenciamentoequipes.core.repository.UsuarioRepository;
 import com.ustore.gerenciamentoequipes.enums.Cargo;
 import com.ustore.gerenciamentoequipes.enums.NivelAcesso;
 import com.ustore.gerenciamentoequipes.enums.StatusUser;
-import com.ustore.gerenciamentoequipes.core.especifications.UsuarioSpecification;
 import com.ustore.gerenciamentoequipes.exception.ConflictException;
 import com.ustore.gerenciamentoequipes.exception.ResourceNotFoundException;
-import com.ustore.gerenciamentoequipes.exception.UnauthorizedException;
-import com.ustore.gerenciamentoequipes.core.repository.UsuarioRepository;
-import com.ustore.gerenciamentoequipes.security.JwtUtil;
 import com.ustore.gerenciamentoequipes.payload.dto.request.UsuarioFilter;
-import com.ustore.gerenciamentoequipes.payload.dto.request.UsuarioLogin;
 import com.ustore.gerenciamentoequipes.payload.dto.request.UsuarioRequest;
 import com.ustore.gerenciamentoequipes.payload.dto.request.UsuarioUpdateRequest;
 import com.ustore.gerenciamentoequipes.payload.dto.response.UsuarioResponse;
+import com.ustore.gerenciamentoequipes.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,19 +51,6 @@ public class UsuarioSevice {
         Usuario usuarioSalvo = usuarioRepository.save(usuario);
 
         return new UsuarioResponse(usuarioSalvo);
-    }
-
-    public String autenticarCliente(UsuarioLogin dto) {
-        try {
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(dto.getEmail(),
-                            dto.getSenha())
-            );
-            return "Bearer " + jwtUtil.generateToken(authentication.getName());
-
-        } catch (BadCredentialsException | UsernameNotFoundException | AuthorizationDeniedException e) {
-            throw new UnauthorizedException("Usuário ou senha inválidos: ", e.getCause());
-        }
     }
 
     public Page<UsuarioResponse> pesquisar(String nome, String email, Pageable pageable) {

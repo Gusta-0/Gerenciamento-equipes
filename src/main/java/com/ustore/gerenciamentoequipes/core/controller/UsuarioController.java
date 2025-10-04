@@ -4,9 +4,9 @@ import com.ustore.gerenciamentoequipes.config.ClienteAPI;
 import com.ustore.gerenciamentoequipes.enums.Cargo;
 import com.ustore.gerenciamentoequipes.enums.NivelAcesso;
 import com.ustore.gerenciamentoequipes.enums.StatusUser;
+import com.ustore.gerenciamentoequipes.payload.dto.request.LoginRequest;
 import com.ustore.gerenciamentoequipes.security.JwtUtil;
 import com.ustore.gerenciamentoequipes.core.service.UsuarioSevice;
-import com.ustore.gerenciamentoequipes.payload.dto.request.UsuarioLogin;
 import com.ustore.gerenciamentoequipes.payload.dto.request.UsuarioRequest;
 import com.ustore.gerenciamentoequipes.payload.dto.request.UsuarioUpdateRequest;
 import com.ustore.gerenciamentoequipes.payload.dto.response.UsuarioResponse;
@@ -44,14 +44,6 @@ public class UsuarioController implements ClienteAPI{
         return ResponseEntity.ok(usuarioService.salvaUsuario(usuarioRequest));
     }
 
-    @Override
-    @PostMapping("/login")
-    public String login(@Valid @RequestBody UsuarioLogin dto) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getSenha())
-        );
-        return jwtUtil.generateToken(authentication.getName());
-    }
 
     @Override
     @GetMapping("/usuarios/pesquisa")
