@@ -25,7 +25,7 @@ public class UsuarioSpecification {
 
     public static Specification<Usuario> comStatus(StatusUser status) {
         return (root, query, cb) ->
-                status == null ? null : cb.equal(root.get("statusUsuario"), status);
+                status == null ? null : cb.equal(root.get("statusUser"), status);
     }
 
     public static Specification<Usuario> comCargo(Cargo cargo) {

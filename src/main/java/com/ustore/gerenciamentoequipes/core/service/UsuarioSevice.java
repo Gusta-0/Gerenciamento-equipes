@@ -1,46 +1,39 @@
 package com.ustore.gerenciamentoequipes.core.service;
 
 import com.ustore.gerenciamentoequipes.core.entity.Usuario;
+import com.ustore.gerenciamentoequipes.core.especifications.UsuarioSpecification;
+import com.ustore.gerenciamentoequipes.core.repository.UsuarioRepository;
 import com.ustore.gerenciamentoequipes.enums.Cargo;
 import com.ustore.gerenciamentoequipes.enums.NivelAcesso;
 import com.ustore.gerenciamentoequipes.enums.StatusUser;
-import com.ustore.gerenciamentoequipes.core.especifications.UsuarioSpecification;
 import com.ustore.gerenciamentoequipes.exception.ConflictException;
 import com.ustore.gerenciamentoequipes.exception.ResourceNotFoundException;
-import com.ustore.gerenciamentoequipes.exception.UnauthorizedException;
-import com.ustore.gerenciamentoequipes.core.repository.UsuarioRepository;
-import com.ustore.gerenciamentoequipes.security.JwtUtil;
 import com.ustore.gerenciamentoequipes.payload.dto.request.UsuarioFilter;
-import com.ustore.gerenciamentoequipes.payload.dto.request.UsuarioLogin;
 import com.ustore.gerenciamentoequipes.payload.dto.request.UsuarioRequest;
 import com.ustore.gerenciamentoequipes.payload.dto.request.UsuarioUpdateRequest;
 import com.ustore.gerenciamentoequipes.payload.dto.response.UsuarioResponse;
-import com.ustore.gerenciamentoequipes.core.mappers.UsuarioMapper;
-import com.ustore.gerenciamentoequipes.core.mappers.update.UsuarioUpdateMapper;
+import com.ustore.gerenciamentoequipes.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.nio.file.AccessDeniedException;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class UsuarioSevice {
     private final UsuarioRepository usuarioRepository;
-    private final UsuarioMapper usuarioMapper;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
     private final AuthenticationManager authenticationManager;
-    private final UsuarioUpdateMapper usuarioUpdateMapper;
 
     public void emailExiste(String email) {
         if (usuarioRepository.findByEmail(email).isPresent()) {
@@ -60,48 +53,40 @@ public class UsuarioSevice {
         return new UsuarioResponse(usuarioSalvo);
     }
 
-    public String autenticarCliente(UsuarioLogin dto) {
-        try {
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(dto.getEmail(),
-                            dto.getSenha())
-            );
-            return "Bearer " + jwtUtil.generateToken(authentication.getName());
-
-        } catch (BadCredentialsException | UsernameNotFoundException | AuthorizationDeniedException e) {
-            throw new UnauthorizedException("Usuário ou senha inválidos: ", e.getCause());
-        }
-    }
-
     public Page<UsuarioResponse> pesquisar(String nome, String email, Pageable pageable) {
         return usuarioRepository.findAll(
                 UsuarioSpecification.comPesquisa(nome, email),
                 pageable
-        ).map(usuarioMapper::toResponse);
+        ).map(UsuarioResponse::new);
     }
 
     public Page<UsuarioResponse> filtrar(Cargo cargo, StatusUser status, NivelAcesso nivel, Pageable pageable) {
         return usuarioRepository.findAll(
                 UsuarioSpecification.comFiltros(cargo, status, nivel),
                 pageable
-        ).map(usuarioMapper::toResponse);
+        ).map(UsuarioResponse::new);
     }
 
     @Transactional
-    public UsuarioResponse atualizar(UsuarioUpdateRequest dto) {
+    public UsuarioResponse atualizar(UUID id, UsuarioUpdateRequest dto) throws AccessDeniedException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String email = auth.getName();
+        String emailLogado = auth.getName();
 
-        Usuario usuarioExistente = usuarioRepository.findByEmail(email)
-                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
+        Usuario usuarioLogado = usuarioRepository.findByEmail(emailLogado)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário logado não encontrado"));
 
-        usuarioUpdateMapper.updateUsuario(dto, usuarioExistente);
+        Usuario usuarioAlvo = usuarioRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário alvo não encontrado"));
 
-        if (dto.novaSenha() != null && !dto.novaSenha().isBlank()) {
-            usuarioExistente.setSenha(passwordEncoder.encode(dto.novaSenha()));
+        if (!usuarioLogado.getNivelAcesso().equals(NivelAcesso.ADMIN)
+                && !usuarioAlvo.getId().equals(usuarioLogado.getId())) {
+            throw new AccessDeniedException("Você não tem permissão para atualizar este usuário.");
         }
-        Usuario salvo = usuarioRepository.save(usuarioExistente);
-        return usuarioMapper.toResponse(salvo);
+
+        dto.atualizarEntidade(usuarioAlvo, passwordEncoder);
+
+        Usuario salvo = usuarioRepository.save(usuarioAlvo);
+        return new UsuarioResponse(salvo);
     }
 
     public Page<UsuarioResponse> buscar(UsuarioFilter filter, Pageable pageable) {
@@ -114,17 +99,28 @@ public class UsuarioSevice {
         );
 
         return usuarioRepository.findAll(spec, pageable)
-                .map(usuarioMapper::toResponse);
+                .map(UsuarioResponse::new);
     }
 
 
     @Transactional
-    public void inativarUsuario(String email) {
-        Usuario usuario = usuarioRepository.findByEmail(email)
-                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
+    public void inativarUsuario(UUID id) throws AccessDeniedException {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String emailLogado = auth.getName();
 
-        usuario.setStatusUser(StatusUser.INATIVO);
-        usuarioRepository.save(usuario);
+        Usuario usuarioLogado = usuarioRepository.findByEmail(emailLogado)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário logado não encontrado"));
+
+        Usuario usuarioAlvo = usuarioRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário alvo não encontrado"));
+
+        if (!usuarioLogado.getNivelAcesso().equals(NivelAcesso.ADMIN)
+                && !usuarioAlvo.getId().equals(usuarioLogado.getId())) {
+            throw new AccessDeniedException("Você não tem permissão para inativar este usuário.");
+        }
+
+        usuarioAlvo.setStatusUser(StatusUser.INATIVO);
+        usuarioRepository.save(usuarioAlvo);
     }
 
 }

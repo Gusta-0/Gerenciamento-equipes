@@ -32,7 +32,7 @@ public class Usuario implements UserDetails {
     private String imagem;
     private LocalDateTime dataCadastro;
     @Enumerated(EnumType.STRING)
-    private StatusUser statusUser = StatusUser.ATIVO;
+    private StatusUser statusUser;
 
     @OneToMany(mappedBy = "responsavel")
     private Set<Tarefa> tarefas = new HashSet<>();

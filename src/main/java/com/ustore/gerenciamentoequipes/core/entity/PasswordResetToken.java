@@ -2,22 +2,31 @@ package com.ustore.gerenciamentoequipes.core.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Entity(name = "RecuperacaoSenha")
+@Entity
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class RecuperacaoSenha {
-    @Id @GeneratedValue(strategy = GenerationType.UUID)
+public class PasswordResetToken {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+
     private String token;
-    private LocalDateTime dataSolicitacao;
-    private LocalDateTime dataExpiracao;
-    @ManyToOne
-    @JoinColumn(name = "usuario_id")
+
+    @OneToOne
     private Usuario usuario;
+
+    private LocalDateTime expiryDate;
+
+    public boolean isExpired() {
+        return expiryDate.isBefore(LocalDateTime.now());
+    }
 }
+
