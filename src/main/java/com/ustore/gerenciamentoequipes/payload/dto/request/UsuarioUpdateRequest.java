@@ -1,9 +1,11 @@
 package com.ustore.gerenciamentoequipes.payload.dto.request;
 
+import com.ustore.gerenciamentoequipes.core.entity.Usuario;
 import com.ustore.gerenciamentoequipes.enums.Cargo;
 import com.ustore.gerenciamentoequipes.enums.NivelAcesso;
 import com.ustore.gerenciamentoequipes.enums.StatusUser;
 import jakarta.validation.constraints.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 public record UsuarioUpdateRequest(
         @Size(min = 10, max = 100, message = "O nome deve ter entre 10 e 100 caracteres")
@@ -31,4 +33,27 @@ public record UsuarioUpdateRequest(
 
         StatusUser statusUser
 ){
+        public void atualizarEntidade(Usuario usuario, PasswordEncoder passwordEncoder) {
+                if (this.nomeCompleto != null && !this.nomeCompleto.isBlank()) {
+                        usuario.setNomeCompleto(this.nomeCompleto);
+                }
+                if (this.email != null && !this.email.isBlank()) {
+                        usuario.setEmail(this.email);
+                }
+                if (this.novaSenha != null && !this.novaSenha.isBlank()) {
+                        usuario.setSenha(passwordEncoder.encode(this.novaSenha));
+                }
+                if (this.nivelAcesso != null) {
+                        usuario.setNivelAcesso(this.nivelAcesso);
+                }
+                if (this.cargo != null) {
+                        usuario.setCargo(this.cargo);
+                }
+                if (this.telefone != null && !this.telefone.isBlank()) {
+                        usuario.setTelefone(this.telefone);
+                }
+                if (this.statusUser != null) {
+                        usuario.setStatusUser(this.statusUser);
+                }
+        }
 }

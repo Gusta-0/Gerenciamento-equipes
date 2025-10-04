@@ -43,7 +43,7 @@ public class SecurityConfig {
                         // Endpoints públicos
                         .requestMatchers("/usuario/login").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/auth").permitAll()
+                        .requestMatchers("/auth/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/usuario").permitAll()
                         .requestMatchers(
                                 "/swagger-ui/**",

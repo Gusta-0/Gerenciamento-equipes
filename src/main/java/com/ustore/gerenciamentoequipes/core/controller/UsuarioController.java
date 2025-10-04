@@ -4,9 +4,9 @@ import com.ustore.gerenciamentoequipes.config.ClienteAPI;
 import com.ustore.gerenciamentoequipes.enums.Cargo;
 import com.ustore.gerenciamentoequipes.enums.NivelAcesso;
 import com.ustore.gerenciamentoequipes.enums.StatusUser;
+import com.ustore.gerenciamentoequipes.payload.dto.request.LoginRequest;
 import com.ustore.gerenciamentoequipes.security.JwtUtil;
 import com.ustore.gerenciamentoequipes.core.service.UsuarioSevice;
-import com.ustore.gerenciamentoequipes.payload.dto.request.UsuarioLogin;
 import com.ustore.gerenciamentoequipes.payload.dto.request.UsuarioRequest;
 import com.ustore.gerenciamentoequipes.payload.dto.request.UsuarioUpdateRequest;
 import com.ustore.gerenciamentoequipes.payload.dto.response.UsuarioResponse;
@@ -24,6 +24,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.AccessDeniedException;
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/usuario")
 @RequiredArgsConstructor
@@ -36,18 +39,11 @@ public class UsuarioController implements ClienteAPI{
 
     @Override
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UsuarioResponse> salvaUsuario(@Valid @RequestBody UsuarioRequest usuarioRequest) {
         return ResponseEntity.ok(usuarioService.salvaUsuario(usuarioRequest));
     }
 
-    @Override
-    @PostMapping("/login")
-    public String login(@Valid @RequestBody UsuarioLogin dto) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getSenha())
-        );
-        return jwtUtil.generateToken(authentication.getName());
-    }
 
     @Override
     @GetMapping("/usuarios/pesquisa")
@@ -71,16 +67,21 @@ public class UsuarioController implements ClienteAPI{
     }
 
     @Override
-    @PatchMapping
-    public ResponseEntity<UsuarioResponse> atualizaDadoUsuario(UsuarioUpdateRequest dto) {
-        return ResponseEntity.ok(usuarioService.atualizar(dto));
+    @PatchMapping("/{id}")
+    public ResponseEntity<UsuarioResponse> atualizaDadoUsuario(
+            @PathVariable UUID id,
+            @RequestBody @Valid UsuarioUpdateRequest dto
+    ) throws AccessDeniedException {
+        UsuarioResponse atualizado = usuarioService.atualizar(id, dto);
+        return ResponseEntity.ok(atualizado);
     }
 
     @Override
-    @DeleteMapping("/{email}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE')")
-    public void inativar(@PathVariable String email) {
-        usuarioService.inativarUsuario(email);
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public void inativar(@PathVariable UUID id) throws AccessDeniedException {
+        usuarioService.inativarUsuario(id);
     }
+
 }
